@@ -126,8 +126,7 @@ nav::after {
   width: 100%;
   height: 130%;
   object-fit: cover;
-  object-position: center 30%;
-  filter: grayscale(40%) sepia(25%) contrast(1.1) brightness(0.5);
+  object-position: center top;
   will-change: transform;
   transform: translateY(0);
 }
@@ -135,29 +134,10 @@ nav::after {
 .paris-overlay {
   position: absolute; inset: 0;
   background:
-    linear-gradient(to right, var(--bg) 0%, rgba(10,10,10,.55) 16%, transparent 42%),
+    linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.32)),
+    linear-gradient(to right, var(--bg) 0%, rgba(10,10,10,.55) 16%, transparent 40%),
     linear-gradient(to top, var(--bg) 0%, transparent 20%),
     linear-gradient(to bottom, rgba(10,10,10,.65) 0%, transparent 14%);
-}
-
-/* Portrait floating at seam */
-.portrait-wrap {
-  position: absolute;
-  bottom: 4.5rem;
-  left: -52px;
-  width: 128px; height: 128px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid var(--accent);
-  box-shadow: 0 0 0 6px var(--bg), 0 0 0 7px rgba(200,185,154,.15);
-  z-index: 3;
-}
-
-.portrait-img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center 12%;
-  filter: grayscale(20%) sepia(12%) contrast(1.05);
 }
 
 .eyebrow {
@@ -421,14 +401,11 @@ footer {
       <div class="paris-wrap">
         <img
           class="paris-img"
-          src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=900&q=85&fit=crop"
-          alt="Paris"
+          src="hero.png"
+          alt="Junaid Gulzar Malik — Paris"
           loading="eager"
         />
         <div class="paris-overlay"></div>
-      </div>
-      <div class="portrait-wrap">
-        <img class="portrait-img" src="profile.jpg" alt="Junaid Gulzar Malik" />
       </div>
     </div>
   </div>
