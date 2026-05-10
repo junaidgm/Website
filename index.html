@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Junaid Gulzar Malik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0a0a0a;
+  --surface: #111111;
+  --border:  #1e1e1e;
+  --text:    #e8e4dc;
+  --muted:   #5a5a5a;
+  --accent:  #c8b99a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Cursor */
+#cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .2s, height .2s;
+  mix-blend-mode: difference;
+}
+#cursor-ring {
+  position: fixed; width: 38px; height: 38px;
+  border: 1px solid rgba(200,185,154,0.35); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+}
+@media (hover: none) { #cursor, #cursor-ring { display: none; } body { cursor: auto; } }
+
+/* Grain */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9000; opacity: .5;
+}
+
+/* Nav */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.5rem 3rem;
+}
+nav::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,10,10,.95) 0%, transparent 100%);
+  z-index: -1; pointer-events: none;
+}
+.nav-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: .72rem; letter-spacing: .12em;
+  color: var(--muted); text-decoration: none;
+  transition: color .25s;
+}
+.nav-logo:hover { color: var(--text); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  font-size: .75rem; letter-spacing: .1em;
+  color: var(--muted); text-decoration: none; text-transform: uppercase;
+  transition: color .25s; font-weight: 400;
+}
+.nav-links a:hover { color: var(--accent); }
+
+/* Hero */
+.hero {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 65%, rgba(200,185,154,.045) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 85% 25%, rgba(80,100,180,.03) 0%, transparent 60%);
+  animation: bgFloat 10s ease-in-out infinite alternate;
+}
+@keyframes bgFloat { to { transform: scale(1.05) translate(-8px,-12px); } }
+
+/* Hero two-column split */
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-left {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 3rem 4.5rem;
+  position: relative;
+}
+
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.paris-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.paris-img {
+  width: 100%;
+  height: 130%;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: grayscale(40%) sepia(25%) contrast(1.1) brightness(0.5);
+  will-change: transform;
+  transform: translateY(0);
+}
+
+.paris-overlay {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to right, var(--bg) 0%, rgba(10,10,10,.55) 16%, transparent 42%),
+    linear-gradient(to top, var(--bg) 0%, transparent 20%),
+    linear-gradient(to bottom, rgba(10,10,10,.65) 0%, transparent 14%);
+}
+
+/* Portrait floating at seam */
+.portrait-wrap {
+  position: absolute;
+  bottom: 4.5rem;
+  left: -52px;
+  width: 128px; height: 128px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 0 6px var(--bg), 0 0 0 7px rgba(200,185,154,.15);
+  z-index: 3;
+}
+
+.portrait-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 12%;
+  filter: grayscale(20%) sepia(12%) contrast(1.05);
+}
+
+.eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em; color: var(--accent);
+  text-transform: uppercase; margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--accent); }
+
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(3.8rem, 9vw, 9rem);
+  font-weight: 400; line-height: .93; letter-spacing: -.02em;
+  margin-bottom: 3rem;
+}
+h1 em { font-style: italic; color: var(--accent); }
+
+.hero-foot {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  flex-wrap: wrap; gap: 2rem;
+}
+.hero-desc {
+  font-size: .92rem; color: var(--muted); line-height: 1.75;
+  max-width: 320px; font-weight: 300;
+}
+.scroll-hint {
+  font-family: 'Space Mono', monospace;
+  font-size: .62rem; letter-spacing: .18em; color: var(--muted);
+  text-transform: uppercase; display: flex; align-items: center; gap: .75rem;
+}
+.scroll-hint::after {
+  content: ''; display: block; width: 1px; height: 40px; background: var(--muted);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: .25; } 50% { opacity: .85; } }
+
+/* Stats */
+.stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border);
+}
+.stat {
+  padding: 2.5rem 2rem; border-right: 1px solid var(--border);
+  transition: background .3s;
+}
+.stat:last-child { border-right: none; }
+.stat:hover { background: var(--surface); }
+.stat-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 3rem; line-height: 1; margin-bottom: .6rem;
+}
+.stat-val sup { color: var(--accent); font-size: 1.8rem; vertical-align: super; }
+.stat-lbl { font-size: .78rem; color: var(--muted); line-height: 1.55; font-weight: 300; }
+
+/* Marquee */
+.marquee { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.1rem 0; overflow: hidden; }
+.track { display: inline-flex; animation: scroll 22s linear infinite; }
+.track span { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1rem; color: var(--muted); padding: 0 2rem; }
+.track span.sep { font-style: normal; font-family: 'Space Mono'; font-size: .45rem; color: var(--accent); vertical-align: middle; }
+@keyframes scroll { to { transform: translateX(-50%); } }
+
+/* Skills */
+.skills { padding: 5.5rem 3rem; }
+.sec-hd {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; margin-bottom: 3.5rem;
+}
+.sec-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 400; }
+.sec-idx { font-family: 'Space Mono'; font-size: .65rem; color: var(--muted); }
+
+.skill-grid { display: grid; grid-template-columns: repeat(4,1fr); }
+.sk-col {
+  padding: 2rem; border-right: 1px solid var(--border);
+  transition: background .3s;
+}
+.sk-col:last-child { border-right: none; }
+.sk-col:hover { background: var(--surface); }
+.sk-lbl {
+  font-family: 'Space Mono'; font-size: .58rem; letter-spacing: .18em;
+  color: var(--accent); text-transform: uppercase; margin-bottom: 1.5rem;
+}
+.sk-list { list-style: none; }
+.sk-list li {
+  font-size: .87rem; color: var(--muted); padding: .35rem 0;
+  border-bottom: 1px solid var(--border); transition: color .2s;
+}
+.sk-list li:last-child { border-bottom: none; }
+.sk-col:hover .sk-list li { color: var(--text); }
+
+/* Press */
+.press { padding: 5.5rem 3rem; border-top: 1px solid var(--border); }
+
+.press-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.press-card {
+  padding: 2.5rem 2rem;
+  border-right: 1px solid var(--border);
+  text-decoration: none;
+  display: flex; flex-direction: column; gap: 1.2rem;
+  transition: background .3s;
+}
+.press-card:last-child { border-right: none; }
+.press-card:hover { background: var(--surface); }
+
+.press-meta {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.press-pub {
+  font-family: 'Space Mono'; font-size: .58rem; letter-spacing: .18em;
+  color: var(--accent); text-transform: uppercase;
+}
+.press-year {
+  font-family: 'Space Mono'; font-size: .58rem; letter-spacing: .1em;
+  color: var(--muted);
+}
+.press-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem; color: var(--text); line-height: 1.4;
+  flex: 1;
+  transition: color .25s;
+}
+.press-card:hover .press-title { color: var(--accent); }
+.press-arrow {
+  font-family: 'Space Mono'; color: var(--muted); font-size: .8rem;
+  transition: transform .25s, color .25s;
+  align-self: flex-end;
+}
+.press-card:hover .press-arrow { transform: translateX(6px); color: var(--accent); }
+
+/* CTA */
+.cta {
+  padding: 7rem 3rem;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 55% 70% at 50% 50%, rgba(200,185,154,.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta .eyebrow { justify-content: center; }
+.cta .eyebrow::before { display: none; }
+.cta h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.2rem, 5.5vw, 5rem);
+  font-weight: 400; line-height: 1.05; margin-bottom: 3rem; max-width: 580px;
+}
+.cta h2 em { font-style: italic; color: var(--accent); }
+
+.dl-btn {
+  display: inline-flex; align-items: center; gap: .8rem;
+  padding: 1.05rem 2.75rem;
+  border: 1px solid var(--accent); color: var(--accent);
+  text-decoration: none; font-family: 'Space Mono';
+  font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+  position: relative; overflow: hidden; transition: color .3s;
+}
+.dl-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--accent); transform: translateY(100%); transition: transform .3s ease; z-index: -1;
+}
+.dl-btn:hover { color: var(--bg); }
+.dl-btn:hover::before { transform: translateY(0); }
+.dl-arrow { transition: transform .3s; display: inline-block; }
+.dl-btn:hover .dl-arrow { transform: translateX(5px); }
+
+/* Contact */
+.contact { padding: 6rem 3rem; border-top: 1px solid var(--border); }
+.contact-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 3rem; }
+.contact h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.2rem, 5vw, 4.5rem); font-weight: 400; line-height: 1.08;
+}
+.contact h2 em { font-style: italic; color: var(--accent); }
+.c-links { display: flex; flex-direction: column; gap: 1rem; }
+.c-link {
+  font-family: 'Space Mono'; font-size: .72rem; letter-spacing: .05em;
+  color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 1rem; transition: color .22s;
+}
+.c-link::before { content: '→'; color: var(--accent); }
+.c-link:hover { color: var(--text); }
+
+/* Footer */
+footer {
+  padding: 1.75rem 3rem; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+}
+.f-name, .f-copy { font-family: 'Space Mono'; font-size: .62rem; letter-spacing: .1em; color: var(--muted); }
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* Mobile */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .nav-links { display: none; }
+
+  .hero-split { grid-template-columns: 1fr; }
+  .hero-right { height: 42vh; }
+  .hero-left { padding: 0 1.5rem 3.5rem; min-height: 60vh; justify-content: flex-end; }
+  .portrait-wrap { left: 50%; transform: translateX(-50%); bottom: -52px; }
+
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat { border-right: none; border-bottom: 1px solid var(--border); }
+  .stat:nth-child(odd) { border-right: 1px solid var(--border); }
+
+  .skills { padding: 4rem 1.5rem; }
+  .skill-grid { grid-template-columns: 1fr 1fr; }
+  .sk-col { border-right: none; border-bottom: 1px solid var(--border); }
+  .sk-col:nth-child(odd) { border-right: 1px solid var(--border); }
+
+  .press { padding: 4rem 1.5rem; }
+  .press-grid { grid-template-columns: 1fr; }
+  .press-card { border-right: none; border-bottom: 1px solid var(--border); }
+  .press-card:last-child { border-bottom: none; }
+
+  .cta, .contact { padding: 4.5rem 1.5rem; }
+  footer { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="#" class="nav-logo">JGM</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#press">Press</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="CV_JunaidGulzarMalik.pdf" download>Download CV</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-split">
+    <!-- Left: Text -->
+    <div class="hero-left">
+      <div class="eyebrow">Product Leader &nbsp;·&nbsp; Paris</div>
+      <h1>Junaid<br><em>Gulzar</em><br>Malik</h1>
+      <div class="hero-foot">
+        <p class="hero-desc">Building AI-native products at the intersection of infrastructure, strategy, and human experience.</p>
+        <div class="scroll-hint">Scroll</div>
+      </div>
+    </div>
+
+    <!-- Right: Paris + portrait -->
+    <div class="hero-right">
+      <div class="paris-wrap">
+        <img
+          class="paris-img"
+          src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=900&q=85&fit=crop"
+          alt="Paris"
+          loading="eager"
+        />
+        <div class="paris-overlay"></div>
+      </div>
+      <div class="portrait-wrap">
+        <img class="portrait-img" src="profile.jpg" alt="Junaid Gulzar Malik" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat reveal">
+    <div class="stat-val">10<sup>+</sup></div>
+    <div class="stat-lbl">Years shipping software products</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-val">4<sup>+</sup></div>
+    <div class="stat-lbl">Companies founded or co-founded</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-val">75<sup>K</sup></div>
+    <div class="stat-lbl">Users on a single government platform</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-val">2<sup>×</sup></div>
+    <div class="stat-lbl">Recognized by Forrester &amp; Gartner</div>
+  </div>
+</div>
+
+<!-- Marquee -->
+<div class="marquee">
+  <div class="track">
+    <span>AI Product Strategy</span><span class="sep">✦</span>
+    <span>MCP Integration</span><span class="sep">✦</span>
+    <span>Feature Experimentation</span><span class="sep">✦</span>
+    <span>Go-to-Market</span><span class="sep">✦</span>
+    <span>Growth &amp; Retention</span><span class="sep">✦</span>
+    <span>Enterprise Platforms</span><span class="sep">✦</span>
+    <span>AI Product Strategy</span><span class="sep">✦</span>
+    <span>MCP Integration</span><span class="sep">✦</span>
+    <span>Feature Experimentation</span><span class="sep">✦</span>
+    <span>Go-to-Market</span><span class="sep">✦</span>
+    <span>Growth &amp; Retention</span><span class="sep">✦</span>
+    <span>Enterprise Platforms</span><span class="sep">✦</span>
+  </div>
+</div>
+
+<!-- Skills -->
+<section class="skills" id="skills">
+  <div class="sec-hd reveal">
+    <h2 class="sec-title">Expertise</h2>
+    <span class="sec-idx">02 / 04</span>
+  </div>
+  <div class="skill-grid">
+    <div class="sk-col reveal">
+      <div class="sk-lbl">AI & Product</div>
+      <ul class="sk-list">
+        <li>AI Ecosystem Strategy</li>
+        <li>MCP Protocol</li>
+        <li>Feature Experimentation</li>
+        <li>Prompt Engineering</li>
+        <li>Roadmap Ownership</li>
+        <li>AI Tooling &amp; Evals</li>
+      </ul>
+    </div>
+    <div class="sk-col reveal">
+      <div class="sk-lbl">Data & Analytics</div>
+      <ul class="sk-list">
+        <li>Mixpanel</li>
+        <li>GA4 / Pendo</li>
+        <li>Tableau / Power BI</li>
+        <li>SQL</li>
+        <li>Data Modeling</li>
+        <li>A/B Testing</li>
+      </ul>
+    </div>
+    <div class="sk-col reveal">
+      <div class="sk-lbl">Technical</div>
+      <ul class="sk-list">
+        <li>Python</li>
+        <li>JavaScript</li>
+        <li>C++ / Java</li>
+        <li>Figma / Prototyping</li>
+        <li>UI/UX Design</li>
+        <li>API Integration</li>
+      </ul>
+    </div>
+    <div class="sk-col reveal">
+      <div class="sk-lbl">Leadership</div>
+      <ul class="sk-list">
+        <li>Stakeholder Management</li>
+        <li>Cross-functional Alignment</li>
+        <li>Go-to-Market</li>
+        <li>Public Speaking</li>
+        <li>Sales Enablement</li>
+        <li>Team Building</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Press -->
+<section class="press" id="press">
+  <div class="sec-hd reveal">
+    <h2 class="sec-title">Press</h2>
+    <span class="sec-idx">03 / 04</span>
+  </div>
+  <div class="press-grid">
+    <a
+      href="https://www.bfmtv.com/economie/operations/le-tete-a-tete-decideurs/qwanse-la-digitalisation-du-secteur-routier_AN-201910010266.html"
+      target="_blank"
+      rel="noopener"
+      class="press-card reveal"
+    >
+      <div class="press-meta">
+        <div class="press-pub">BFM TV</div>
+        <div class="press-year">2019</div>
+      </div>
+      <div class="press-title">Qwanse — la digitalisation du secteur routier</div>
+      <div class="press-arrow">→</div>
+    </a>
+    <a
+      href="https://propakistani.pk/2018/04/02/telenor-and-inbox-business-technologies-lead-the-way-in-modernizing-agriculture-in-punjab/"
+      target="_blank"
+      rel="noopener"
+      class="press-card reveal"
+    >
+      <div class="press-meta">
+        <div class="press-pub">ProPakistani</div>
+        <div class="press-year">2018</div>
+      </div>
+      <div class="press-title">Telenor and Inbox Business Technologies Lead the Way in Modernizing Agriculture in Punjab</div>
+      <div class="press-arrow">→</div>
+    </a>
+  </div>
+</section>
+
+<!-- Download CTA -->
+<section class="cta reveal" id="cv">
+  <div class="eyebrow">Ready to connect</div>
+  <h2>See the full <em>story</em><br>on paper</h2>
+  <a href="CV_JunaidGulzarMalik.pdf" download class="dl-btn">
+    Download CV <span class="dl-arrow">→</span>
+  </a>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <h2 class="reveal">Let's work<br><em>together.</em></h2>
+    <div class="c-links reveal">
+      <a href="mailto:junaidgulzar92@gmail.com" class="c-link">junaidgulzar92@gmail.com</a>
+      <a href="tel:+33626259983" class="c-link">+33 (0) 6262 59983</a>
+      <a href="https://linkedin.com/in/junaidgulzar" target="_blank" class="c-link">linkedin.com/in/junaidgulzar</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="f-name">Junaid Gulzar Malik</span>
+  <span class="f-copy">© 2026 · Paris, France</span>
+</footer>
+
+<script>
+// Cursor
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function loop(){ rx+=(mx-rx)*.11; ry+=(my-ry)*.11; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+
+// Paris parallax on scroll
+const parisImg = document.querySelector('.paris-img');
+if (parisImg) {
+  window.addEventListener('scroll', () => {
+    parisImg.style.transform = `translateY(${window.scrollY * 0.18}px)`;
+  }, { passive: true });
+}
+
+// Reveal on scroll
+const els = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const group = e.target.parentElement.querySelectorAll('.reveal');
+      group.forEach((el,i) => setTimeout(()=>el.classList.add('in'), i*75));
+    }
+  });
+},{ threshold:.1, rootMargin:'0px 0px -40px 0px'});
+els.forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
