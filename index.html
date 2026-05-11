@@ -99,27 +99,32 @@ nav::after {
 }
 @keyframes bgFloat { to { transform: scale(1.05) translate(-8px,-12px); } }
 
-/* Hero two-column split */
+/* Hero centered minimal layout */
 .hero-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
   position: relative;
   z-index: 1;
+  text-align: center;
+  padding: 0 3rem;
 }
 
 .hero-left {
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 0 3rem 4.5rem;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 0;
   position: relative;
+  z-index: 2;
+  max-width: 800px;
 }
 
 .hero-right {
-  position: relative;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index: 0;
 }
 
 .paris-wrap {
@@ -130,107 +135,33 @@ nav::after {
 
 .paris-img {
   width: 100%;
-  height: 130%;
+  height: 100%;
   object-fit: cover;
-  object-position: 80% center;
-  filter: grayscale(35%) sepia(20%) contrast(1.08) brightness(0.42);
+  object-position: center center;
+  filter: grayscale(50%) sepia(15%) contrast(1.1) brightness(0.35);
   will-change: transform;
   transform: translateY(0);
 }
 
 .paris-overlay {
   position: absolute; inset: 0;
-  background:
-    linear-gradient(rgba(0,0,0,.48), rgba(0,0,0,.48)),
-    linear-gradient(to right, var(--bg) 0%, rgba(10,10,10,.7) 12%, transparent 38%),
-    linear-gradient(to top, var(--bg) 0%, transparent 18%),
-    linear-gradient(to bottom, rgba(10,10,10,.7) 0%, transparent 12%);
+  background: radial-gradient(ellipse at center, rgba(10,10,10,.4) 0%, rgba(10,10,10,.8) 100%);
 }
 
-/* Portrait — layered ring system */
 .portrait-center {
-  position: relative;
-  z-index: 4;
-  width: 230px; height: 230px;
-  flex-shrink: 0;
+  display: none;
 }
 
-/* Outermost slow-spinning dashed orbit */
-.portrait-center::before {
-  content: '';
-  position: absolute;
-  inset: -22px;
-  border-radius: 50%;
-  border: 1px dashed rgba(200,185,154,.18);
-  animation: orbit-slow 28s linear infinite reverse;
-  pointer-events: none;
-}
-
-/* Tick marks on the dashed orbit */
-.portrait-center::after {
-  content: '';
-  position: absolute;
-  inset: -30px;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  border-top-color: rgba(200,185,154,.35);
-  border-right-color: rgba(200,185,154,.12);
-  animation: orbit-slow 18s linear infinite;
-  pointer-events: none;
-}
-
-/* Spinning conic-gradient aurora ring */
 .portrait-ring {
-  position: absolute;
-  inset: -5px;
-  border-radius: 50%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    var(--accent) 55deg,
-    transparent 110deg,
-    transparent 200deg,
-    rgba(200,185,154,.28) 255deg,
-    transparent 310deg,
-    transparent 360deg
-  );
-  animation: orbit-spin 5s linear infinite;
+  display: none;
 }
 
-/* Inner gap ring — separates aurora from image */
 .portrait-gap {
-  position: absolute;
-  inset: 4px;
-  border-radius: 50%;
-  background: var(--bg);
-  z-index: 1;
+  display: none;
 }
 
-/* Static hairline ring just inside gap */
-.portrait-gap::after {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  border-radius: 50%;
-  border: 1px solid rgba(200,185,154,.2);
-  pointer-events: none;
-}
-
-/* Image frame */
 .portrait-frame {
-  position: absolute;
-  inset: 8px;
-  border-radius: 50%;
-  overflow: hidden;
-  z-index: 2;
-  box-shadow: inset 0 0 24px rgba(0,0,0,.5);
-}
-
-.portrait-frame img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: 33% 10%;
-  filter: contrast(1.04) brightness(0.95);
+  display: none;
 }
 
 @keyframes orbit-spin { to { transform: rotate(360deg); } }
@@ -239,31 +170,32 @@ nav::after {
 .eyebrow {
   font-family: 'Space Mono', monospace;
   font-size: .65rem; letter-spacing: .22em; color: var(--accent);
-  text-transform: uppercase; margin-bottom: 1.5rem;
-  display: flex; align-items: center; gap: 1rem;
+  text-transform: uppercase; margin-bottom: 2rem;
+  display: none;
 }
 .eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--accent); }
 
 h1 {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(3.8rem, 9vw, 9rem);
-  font-weight: 400; line-height: .93; letter-spacing: -.02em;
-  margin-bottom: 3rem;
+  font-size: clamp(3.2rem, 8vw, 7rem);
+  font-weight: 400; line-height: 1; letter-spacing: -.01em;
+  margin-bottom: 2.5rem;
+  margin-top: 0;
 }
 h1 em { font-style: italic; color: var(--accent); }
 
 .hero-foot {
-  display: flex; justify-content: space-between; align-items: flex-end;
-  flex-wrap: wrap; gap: 2rem;
+  display: flex; justify-content: center; align-items: center;
+  flex-direction: column; gap: 3rem; width: 100%;
 }
 .hero-desc {
-  font-size: .92rem; color: var(--muted); line-height: 1.75;
-  max-width: 320px; font-weight: 300;
+  font-size: 1rem; color: var(--text); line-height: 1.8;
+  max-width: 600px; font-weight: 300;
 }
 .scroll-hint {
   font-family: 'Space Mono', monospace;
   font-size: .62rem; letter-spacing: .18em; color: var(--muted);
-  text-transform: uppercase; display: flex; align-items: center; gap: .75rem;
+  text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: .5rem; position: absolute; bottom: 2rem;
 }
 .scroll-hint::after {
   content: ''; display: block; width: 1px; height: 40px; background: var(--muted);
