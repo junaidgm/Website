@@ -79,6 +79,9 @@ nav::after {
   transition: color .25s; font-weight: 400;
 }
 .nav-links a:hover { color: var(--accent); }
+.nav-links .blog-link { cursor: not-allowed; opacity: 0.6; position: relative; }
+.nav-links .blog-link::after { content: 'Coming Soon'; position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: .65rem; color: var(--accent); opacity: 0; transition: opacity .25s; pointer-events: none; }
+.nav-links .blog-link:hover::after { opacity: 1; }
 
 /* Hero */
 .hero {
@@ -485,9 +488,9 @@ footer {
 <nav>
   <a href="#" class="nav-logo">JGM</a>
   <ul class="nav-links">
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#experience">Experience</a></li>
+    <li><a href="https://linkedin.com/in/junaidgulzar" target="_blank">LinkedIn</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#" class="blog-link" onclick="return false">Blog</a></li>
     <li><a href="CV_JunaidGulzarMalik.pdf" download>CV</a></li>
   </ul>
 </nav>
@@ -499,10 +502,9 @@ footer {
   <div class="hero-split">
     <!-- Left: Text -->
     <div class="hero-left">
-      <div class="eyebrow">Senior PM · AI & Product Strategy</div>
       <h1>Junaid<br><em>Gulzar</em><br>Malik</h1>
       <div class="hero-foot">
-        <p class="hero-desc">Lead PM at Kameleoon. Built from scratch. Scaled to enterprise. Recognized by Forrester & Gartner.</p>
+        <p class="hero-desc">Senior PM building AI-native products.<br>AI experimentation, feature flagging, product strategy.<br>Paris, Île-de-France.</p>
         <div class="scroll-hint">Scroll</div>
       </div>
     </div>
@@ -579,14 +581,14 @@ footer {
       </ul>
     </div>
     <div class="sk-col reveal">
-      <div class="sk-lbl">Technical</div>
+      <div class="sk-lbl">Tools & Systems</div>
       <ul class="sk-list">
-        <li>Python</li>
-        <li>JavaScript</li>
-        <li>C++ / Java</li>
         <li>Figma / Prototyping</li>
-        <li>UI/UX Design</li>
         <li>API Integration</li>
+        <li>MCP Servers</li>
+        <li>LLM Integration</li>
+        <li>Product Analytics</li>
+        <li>Experimentation Platforms</li>
       </ul>
     </div>
     <div class="sk-col reveal">
@@ -651,8 +653,7 @@ footer {
 
 <!-- Download CTA -->
 <section class="cta reveal" id="cv">
-  <div class="eyebrow">Full background</div>
-  <h2>See the complete <em>CV</em></h2>
+  <h2>Full background<br><em>and experience</em></h2>
   <a href="CV_JunaidGulzarMalik.pdf" download class="dl-btn">
     Download CV <span class="dl-arrow">→</span>
   </a>
