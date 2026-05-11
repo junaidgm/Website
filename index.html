@@ -144,27 +144,94 @@ nav::after {
     linear-gradient(to bottom, rgba(10,10,10,.7) 0%, transparent 12%);
 }
 
-/* Centered portrait circle */
+/* Portrait — layered ring system */
 .portrait-center {
   position: relative;
   z-index: 4;
-  width: 210px; height: 210px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid var(--accent);
-  box-shadow:
-    0 0 0 10px rgba(10,10,10,.65),
-    0 0 0 11px rgba(200,185,154,.12),
-    0 0 60px rgba(0,0,0,.5);
+  width: 230px; height: 230px;
   flex-shrink: 0;
 }
 
-.portrait-center img {
+/* Outermost slow-spinning dashed orbit */
+.portrait-center::before {
+  content: '';
+  position: absolute;
+  inset: -22px;
+  border-radius: 50%;
+  border: 1px dashed rgba(200,185,154,.18);
+  animation: orbit-slow 28s linear infinite reverse;
+  pointer-events: none;
+}
+
+/* Tick marks on the dashed orbit */
+.portrait-center::after {
+  content: '';
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-top-color: rgba(200,185,154,.35);
+  border-right-color: rgba(200,185,154,.12);
+  animation: orbit-slow 18s linear infinite;
+  pointer-events: none;
+}
+
+/* Spinning conic-gradient aurora ring */
+.portrait-ring {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--accent) 55deg,
+    transparent 110deg,
+    transparent 200deg,
+    rgba(200,185,154,.28) 255deg,
+    transparent 310deg,
+    transparent 360deg
+  );
+  animation: orbit-spin 5s linear infinite;
+}
+
+/* Inner gap ring — separates aurora from image */
+.portrait-gap {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--bg);
+  z-index: 1;
+}
+
+/* Static hairline ring just inside gap */
+.portrait-gap::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,185,154,.2);
+  pointer-events: none;
+}
+
+/* Image frame */
+.portrait-frame {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 2;
+  box-shadow: inset 0 0 24px rgba(0,0,0,.5);
+}
+
+.portrait-frame img {
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: center 10%;
-  filter: grayscale(12%) sepia(8%) contrast(1.06);
+  object-position: 33% 10%;
+  filter: contrast(1.04) brightness(0.95);
 }
+
+@keyframes orbit-spin { to { transform: rotate(360deg); } }
+@keyframes orbit-slow { to { transform: rotate(360deg); } }
 
 .eyebrow {
   font-family: 'Space Mono', monospace;
@@ -199,169 +266,189 @@ h1 em { font-style: italic; color: var(--accent); }
   content: ''; display: block; width: 1px; height: 40px; background: var(--muted);
   animation: pulse 2s ease-in-out infinite;
 }
-@keyframes pulse { 0%,100% { opacity: .25; } 50% { opacity: .85; } }
+@keyframes pulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
 
 /* Stats */
 .stats {
   display: grid; grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative; z-index: 2;
 }
 .stat {
-  padding: 2.5rem 2rem; border-right: 1px solid var(--border);
-  transition: background .3s;
+  border-right: 1px solid var(--border);
+  padding: 3rem 2.5rem;
+  text-align: center;
 }
 .stat:last-child { border-right: none; }
-.stat:hover { background: var(--surface); }
 .stat-val {
   font-family: 'DM Serif Display', serif;
-  font-size: 3rem; line-height: 1; margin-bottom: .6rem;
+  font-size: 2.4rem; font-weight: 400; margin-bottom: .75rem;
+  color: var(--text);
 }
-.stat-val sup { color: var(--accent); font-size: 1.8rem; vertical-align: super; }
-.stat-lbl { font-size: .78rem; color: var(--muted); line-height: 1.55; font-weight: 300; }
-
-/* Marquee */
-.marquee { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.1rem 0; overflow: hidden; }
-.track { display: inline-flex; animation: scroll 22s linear infinite; }
-.track span { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1rem; color: var(--muted); padding: 0 2rem; }
-.track span.sep { font-style: normal; font-family: 'Space Mono'; font-size: .45rem; color: var(--accent); vertical-align: middle; }
-@keyframes scroll { to { transform: translateX(-50%); } }
+.stat-val sup { font-size: 1.2rem; }
+.stat-lbl {
+  font-size: .85rem; color: var(--muted); line-height: 1.6;
+  max-width: 140px; margin: 0 auto;
+}
+.stat.in .stat-val { animation: count-up .6s ease-out both; }
+@keyframes count-up { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
 /* Skills */
-.skills { padding: 5.5rem 3rem; }
-.sec-hd {
-  display: flex; justify-content: space-between; align-items: baseline;
-  border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; margin-bottom: 3.5rem;
+.skills {
+  padding: 6rem 3rem;
+  border-bottom: 1px solid var(--border);
+  position: relative; z-index: 2;
 }
-.sec-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 400; }
-.sec-idx { font-family: 'Space Mono'; font-size: .65rem; color: var(--muted); }
-
-.skill-grid { display: grid; grid-template-columns: repeat(4,1fr); }
+.sec-hd {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 4rem;
+}
+.sec-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 400; margin: 0;
+}
+.sec-idx {
+  font-family: 'Space Mono', monospace;
+  font-size: .75rem; letter-spacing: .1em; color: var(--muted);
+  text-transform: uppercase;
+}
+.skill-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+}
 .sk-col {
-  padding: 2rem; border-right: 1px solid var(--border);
-  transition: background .3s;
+  border-right: 1px solid var(--border);
+  padding: 2rem 2rem 2rem 0;
 }
 .sk-col:last-child { border-right: none; }
-.sk-col:hover { background: var(--surface); }
 .sk-lbl {
-  font-family: 'Space Mono'; font-size: .58rem; letter-spacing: .18em;
-  color: var(--accent); text-transform: uppercase; margin-bottom: 1.5rem;
+  font-size: .85rem; color: var(--accent); text-transform: uppercase;
+  letter-spacing: .08em; margin-bottom: 1.5rem; font-weight: 500;
 }
-.sk-list { list-style: none; }
+.sk-list {
+  list-style: none; margin: 0; padding: 0;
+}
 .sk-list li {
-  font-size: .87rem; color: var(--muted); padding: .35rem 0;
-  border-bottom: 1px solid var(--border); transition: color .2s;
+  font-size: .9rem; color: var(--text); margin-bottom: 1rem;
+  line-height: 1.5;
 }
-.sk-list li:last-child { border-bottom: none; }
-.sk-col:hover .sk-list li { color: var(--text); }
+.sk-list li:last-child { margin-bottom: 0; }
 
-/* Press */
-.press { padding: 5.5rem 3rem; border-top: 1px solid var(--border); }
-
-.press-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+/* Experience */
+.experience {
+  padding: 6rem 3rem;
+  border-bottom: 1px solid var(--border);
+  position: relative; z-index: 2;
 }
-
-.press-card {
-  padding: 2.5rem 2rem;
-  border-right: 1px solid var(--border);
-  text-decoration: none;
-  display: flex; flex-direction: column; gap: 1.2rem;
-  transition: background .3s;
+.exp-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
 }
-.press-card:last-child { border-right: none; }
-.press-card:hover { background: var(--surface); }
-
-.press-meta {
-  display: flex; align-items: center; justify-content: space-between;
+.exp-card {
+  display: flex; flex-direction: column;
 }
-.press-pub {
-  font-family: 'Space Mono'; font-size: .58rem; letter-spacing: .18em;
-  color: var(--accent); text-transform: uppercase;
+.exp-title {
+  font-size: .95rem; color: var(--accent); text-transform: uppercase;
+  letter-spacing: .08em; margin-bottom: .5rem; font-weight: 500;
 }
-.press-year {
-  font-family: 'Space Mono'; font-size: .58rem; letter-spacing: .1em;
-  color: var(--muted);
-}
-.press-title {
+.exp-role {
   font-family: 'DM Serif Display', serif;
-  font-size: 1.2rem; color: var(--text); line-height: 1.4;
-  flex: 1;
-  transition: color .25s;
+  font-size: 1.6rem; font-weight: 400; margin-bottom: 1.5rem;
+  line-height: 1.2;
 }
-.press-card:hover .press-title { color: var(--accent); }
-.press-arrow {
-  font-family: 'Space Mono'; color: var(--muted); font-size: .8rem;
-  transition: transform .25s, color .25s;
-  align-self: flex-end;
+.exp-bullets {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 1rem;
 }
-.press-card:hover .press-arrow { transform: translateX(6px); color: var(--accent); }
+.exp-bullets li {
+  font-size: .9rem; color: var(--text); line-height: 1.6;
+  padding-left: 1.5rem; position: relative;
+}
+.exp-bullets li::before {
+  content: '→'; position: absolute; left: 0; color: var(--accent);
+}
 
-/* CTA */
+/* Download CTA */
 .cta {
-  padding: 7rem 3rem;
-  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-  position: relative; overflow: hidden;
+  padding: 6rem 3rem;
+  border-bottom: 1px solid var(--border);
+  position: relative; z-index: 2;
 }
-.cta::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse 55% 70% at 50% 50%, rgba(200,185,154,.04) 0%, transparent 70%);
-  pointer-events: none;
-}
-.cta .eyebrow { justify-content: center; }
-.cta .eyebrow::before { display: none; }
 .cta h2 {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(2.2rem, 5.5vw, 5rem);
-  font-weight: 400; line-height: 1.05; margin-bottom: 3rem; max-width: 580px;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 400; margin-bottom: 2.5rem; line-height: 1.1;
 }
 .cta h2 em { font-style: italic; color: var(--accent); }
-
 .dl-btn {
-  display: inline-flex; align-items: center; gap: .8rem;
-  padding: 1.05rem 2.75rem;
-  border: 1px solid var(--accent); color: var(--accent);
-  text-decoration: none; font-family: 'Space Mono';
-  font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
-  position: relative; overflow: hidden; transition: color .3s;
+  display: inline-flex; align-items: center; gap: .75rem;
+  padding: 1.25rem 2rem;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--text);
+  font-size: .9rem; font-weight: 500;
+  text-decoration: none;
+  transition: all .3s ease;
+  cursor: pointer;
 }
-.dl-btn::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--accent); transform: translateY(100%); transition: transform .3s ease; z-index: -1;
+.dl-btn:hover {
+  background: var(--accent);
+  color: var(--bg);
 }
-.dl-btn:hover { color: var(--bg); }
-.dl-btn:hover::before { transform: translateY(0); }
-.dl-arrow { transition: transform .3s; display: inline-block; }
-.dl-btn:hover .dl-arrow { transform: translateX(5px); }
+.dl-arrow {
+  transition: transform .3s ease;
+}
+.dl-btn:hover .dl-arrow { transform: translateX(4px); }
 
 /* Contact */
-.contact { padding: 6rem 3rem; border-top: 1px solid var(--border); }
-.contact-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 3rem; }
+.contact {
+  padding: 6rem 3rem;
+  position: relative; z-index: 2;
+}
+.contact-inner {
+  max-width: 100%;
+}
 .contact h2 {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(2.2rem, 5vw, 4.5rem); font-weight: 400; line-height: 1.08;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 400; margin-bottom: 2.5rem; line-height: 1.1;
 }
 .contact h2 em { font-style: italic; color: var(--accent); }
-.c-links { display: flex; flex-direction: column; gap: 1rem; }
-.c-link {
-  font-family: 'Space Mono'; font-size: .72rem; letter-spacing: .05em;
-  color: var(--muted); text-decoration: none;
-  display: flex; align-items: center; gap: 1rem; transition: color .22s;
+.c-links {
+  display: flex; flex-direction: column; gap: 1.5rem;
 }
-.c-link::before { content: '→'; color: var(--accent); }
-.c-link:hover { color: var(--text); }
+.c-link {
+  font-size: .95rem; color: var(--text);
+  text-decoration: none;
+  transition: color .25s;
+  display: inline-flex; align-items: center;
+}
+.c-link::before {
+  content: '↗'; display: inline-block; margin-right: .5rem;
+  color: var(--accent); opacity: 0; transition: opacity .25s;
+}
+.c-link:hover { color: var(--accent); }
+.c-link:hover::before { opacity: 1; }
 
 /* Footer */
 footer {
-  padding: 1.75rem 3rem; border-top: 1px solid var(--border);
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 2rem 3rem;
+  border-top: 1px solid var(--border);
+  font-size: .8rem; color: var(--muted);
 }
-.f-name, .f-copy { font-family: 'Space Mono'; font-size: .62rem; letter-spacing: .1em; color: var(--muted); }
+.f-name { font-weight: 500; color: var(--text); }
 
-/* Reveal */
-.reveal { opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
-.reveal.in { opacity: 1; transform: none; }
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  animation: fadeIn .6s ease-out forwards;
+}
+.reveal.in { animation: fadeIn .6s ease-out forwards; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* Mobile */
 @media (max-width: 900px) {
@@ -382,13 +469,11 @@ footer {
   .sk-col { border-right: none; border-bottom: 1px solid var(--border); }
   .sk-col:nth-child(odd) { border-right: 1px solid var(--border); }
 
-  .press { padding: 4rem 1.5rem; }
-  .press-grid { grid-template-columns: 1fr; }
-  .press-card { border-right: none; border-bottom: 1px solid var(--border); }
-  .press-card:last-child { border-bottom: none; }
+  .experience { padding: 4rem 1.5rem; }
+  .exp-grid { grid-template-columns: 1fr; }
 
   .cta, .contact { padding: 4.5rem 1.5rem; }
-  footer { padding: 1.5rem; }
+  footer { padding: 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
 }
 </style>
 </head>
@@ -401,9 +486,9 @@ footer {
   <a href="#" class="nav-logo">JGM</a>
   <ul class="nav-links">
     <li><a href="#skills">Skills</a></li>
-    <li><a href="#press">Press</a></li>
+    <li><a href="#experience">Experience</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="CV_JunaidGulzarMalik.pdf" download>Download CV</a></li>
+    <li><a href="CV_JunaidGulzarMalik.pdf" download>CV</a></li>
   </ul>
 </nav>
 
@@ -414,10 +499,10 @@ footer {
   <div class="hero-split">
     <!-- Left: Text -->
     <div class="hero-left">
-      <div class="eyebrow">Product Leader &nbsp;·&nbsp; Paris</div>
+      <div class="eyebrow">Senior PM · AI & Product Strategy</div>
       <h1>Junaid<br><em>Gulzar</em><br>Malik</h1>
       <div class="hero-foot">
-        <p class="hero-desc">Building AI-native products at the intersection of infrastructure, strategy, and human experience.</p>
+        <p class="hero-desc">Lead PM at Kameleoon. Built from scratch. Scaled to enterprise. Recognized by Forrester & Gartner.</p>
         <div class="scroll-hint">Scroll</div>
       </div>
     </div>
@@ -434,7 +519,11 @@ footer {
         <div class="paris-overlay"></div>
       </div>
       <div class="portrait-center">
-        <img src="profile.jpg" alt="Junaid Gulzar Malik" />
+        <div class="portrait-ring"></div>
+        <div class="portrait-gap"></div>
+        <div class="portrait-frame">
+          <img src="hero.png" alt="Junaid Gulzar Malik" />
+        </div>
       </div>
     </div>
   </div>
@@ -444,37 +533,19 @@ footer {
 <div class="stats">
   <div class="stat reveal">
     <div class="stat-val">10<sup>+</sup></div>
-    <div class="stat-lbl">Years shipping software products</div>
+    <div class="stat-lbl">Years building products</div>
   </div>
   <div class="stat reveal">
     <div class="stat-val">4<sup>+</sup></div>
-    <div class="stat-lbl">Companies founded or co-founded</div>
+    <div class="stat-lbl">Founded or co-founded</div>
   </div>
   <div class="stat reveal">
-    <div class="stat-val">75<sup>K</sup></div>
-    <div class="stat-lbl">Users on a single government platform</div>
+    <div class="stat-val">30<sup>K</sup></div>
+    <div class="stat-lbl">Users at Soop.io exit</div>
   </div>
   <div class="stat reveal">
-    <div class="stat-val">2<sup>×</sup></div>
-    <div class="stat-lbl">Recognized by Forrester &amp; Gartner</div>
-  </div>
-</div>
-
-<!-- Marquee -->
-<div class="marquee">
-  <div class="track">
-    <span>AI Product Strategy</span><span class="sep">✦</span>
-    <span>MCP Integration</span><span class="sep">✦</span>
-    <span>Feature Experimentation</span><span class="sep">✦</span>
-    <span>Go-to-Market</span><span class="sep">✦</span>
-    <span>Growth &amp; Retention</span><span class="sep">✦</span>
-    <span>Enterprise Platforms</span><span class="sep">✦</span>
-    <span>AI Product Strategy</span><span class="sep">✦</span>
-    <span>MCP Integration</span><span class="sep">✦</span>
-    <span>Feature Experimentation</span><span class="sep">✦</span>
-    <span>Go-to-Market</span><span class="sep">✦</span>
-    <span>Growth &amp; Retention</span><span class="sep">✦</span>
-    <span>Enterprise Platforms</span><span class="sep">✦</span>
+    <div class="stat-val">€7<sup>M</sup></div>
+    <div class="stat-lbl">CAPP platform budget</div>
   </div>
 </div>
 
@@ -482,7 +553,7 @@ footer {
 <section class="skills" id="skills">
   <div class="sec-hd reveal">
     <h2 class="sec-title">Expertise</h2>
-    <span class="sec-idx">02 / 04</span>
+    <span class="sec-idx">01 / 03</span>
   </div>
   <div class="skill-grid">
     <div class="sk-col reveal">
@@ -491,9 +562,9 @@ footer {
         <li>AI Ecosystem Strategy</li>
         <li>MCP Protocol</li>
         <li>Feature Experimentation</li>
-        <li>Prompt Engineering</li>
         <li>Roadmap Ownership</li>
-        <li>AI Tooling &amp; Evals</li>
+        <li>AI Tooling & Evals</li>
+        <li>Prompt Engineering</li>
       </ul>
     </div>
     <div class="sk-col reveal">
@@ -521,9 +592,9 @@ footer {
     <div class="sk-col reveal">
       <div class="sk-lbl">Leadership</div>
       <ul class="sk-list">
+        <li>Cross-functional Teams</li>
         <li>Stakeholder Management</li>
-        <li>Cross-functional Alignment</li>
-        <li>Go-to-Market</li>
+        <li>Go-to-Market Strategy</li>
         <li>Public Speaking</li>
         <li>Sales Enablement</li>
         <li>Team Building</li>
@@ -532,46 +603,56 @@ footer {
   </div>
 </section>
 
-<!-- Press -->
-<section class="press" id="press">
+<!-- Experience -->
+<section class="experience" id="experience">
   <div class="sec-hd reveal">
-    <h2 class="sec-title">Press</h2>
-    <span class="sec-idx">03 / 04</span>
+    <h2 class="sec-title">Recent Work</h2>
+    <span class="sec-idx">02 / 03</span>
   </div>
-  <div class="press-grid">
-    <a
-      href="https://www.bfmtv.com/economie/operations/le-tete-a-tete-decideurs/qwanse-la-digitalisation-du-secteur-routier_AN-201910010266.html"
-      target="_blank"
-      rel="noopener"
-      class="press-card reveal"
-    >
-      <div class="press-meta">
-        <div class="press-pub">BFM TV</div>
-        <div class="press-year">2019</div>
-      </div>
-      <div class="press-title">Qwanse — la digitalisation du secteur routier</div>
-      <div class="press-arrow">→</div>
-    </a>
-    <a
-      href="https://propakistani.pk/2018/04/02/telenor-and-inbox-business-technologies-lead-the-way-in-modernizing-agriculture-in-punjab/"
-      target="_blank"
-      rel="noopener"
-      class="press-card reveal"
-    >
-      <div class="press-meta">
-        <div class="press-pub">ProPakistani</div>
-        <div class="press-year">2018</div>
-      </div>
-      <div class="press-title">Telenor and Inbox Business Technologies Lead the Way in Modernizing Agriculture in Punjab</div>
-      <div class="press-arrow">→</div>
-    </a>
+  <div class="exp-grid">
+    <div class="exp-card reveal">
+      <div class="exp-title">Lead PM · Kameleoon</div>
+      <div class="exp-role">AI Tools & Experimentation</div>
+      <ul class="exp-bullets">
+        <li>Built MCP server from scratch, deployed to all major LLMs (Claude, Codex, Gemini, Cursor)</li>
+        <li>Owned 12-month AI product roadmap for development workflows</li>
+        <li>Shipped AI co-pilot, in-chat asset creation, experimentation automation</li>
+      </ul>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-title">Founder & CEO · Soop.io</div>
+      <div class="exp-role">Cloud-based School Management</div>
+      <ul class="exp-bullets">
+        <li>Incubated through NIC Lahore accelerator program</li>
+        <li>Scaled to 30,000+ users across modular PaaS platform</li>
+        <li>Acquired and successfully exited</li>
+      </ul>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-title">Senior PM · KeepTruckin</div>
+      <div class="exp-role">Growth & Retention</div>
+      <ul class="exp-bullets">
+        <li>Implemented enterprise chatbot (Ada.cx) + livechat for 30% support volume containment</li>
+        <li>Built churn analytics identifying leading health indicators, 17% save rate</li>
+        <li>Revamped Help Center, improved guided walkthroughs and upsell campaigns</li>
+      </ul>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-title">Product Lead · Inbox Business Technologies</div>
+      <div class="exp-role">Large-scale Government Digitization</div>
+      <ul class="exp-bullets">
+        <li>Led CAPP: province-wide digital and financial inclusion for 75,000+ farmers</li>
+        <li>Managed €7M budget, end-to-end strategy, infrastructure, operations, training</li>
+        <li>Designed federal fraud detection system using OpenText Big Data Analytics</li>
+      </ul>
+    </div>
   </div>
 </section>
 
 <!-- Download CTA -->
 <section class="cta reveal" id="cv">
-  <div class="eyebrow">Ready to connect</div>
-  <h2>See the full <em>story</em><br>on paper</h2>
+  <div class="eyebrow">Full background</div>
+  <h2>See the complete <em>CV</em></h2>
   <a href="CV_JunaidGulzarMalik.pdf" download class="dl-btn">
     Download CV <span class="dl-arrow">→</span>
   </a>
@@ -580,7 +661,7 @@ footer {
 <!-- Contact -->
 <section class="contact" id="contact">
   <div class="contact-inner">
-    <h2 class="reveal">Let's work<br><em>together.</em></h2>
+    <h2 class="reveal">Get in <em>touch</em></h2>
     <div class="c-links reveal">
       <a href="mailto:junaidgulzar92@gmail.com" class="c-link">junaidgulzar92@gmail.com</a>
       <a href="tel:+33626259983" class="c-link">+33 (0) 6262 59983</a>
