@@ -99,32 +99,30 @@ nav::after {
 }
 @keyframes bgFloat { to { transform: scale(1.05) translate(-8px,-12px); } }
 
-/* Hero centered minimal layout */
+/* Hero split layout */
 .hero-split {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   min-height: 100vh;
   position: relative;
   z-index: 1;
-  text-align: center;
-  padding: 0 3rem;
 }
 
 .hero-left {
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
-  padding: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 4rem;
   position: relative;
   z-index: 2;
-  max-width: 800px;
+  background: linear-gradient(135deg, rgba(88,57,135,.3) 0%, rgba(76,175,80,.1) 100%);
+  text-align: left;
 }
 
 .hero-right {
-  position: absolute;
-  inset: 0;
+  position: relative;
   overflow: hidden;
-  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .paris-wrap {
@@ -138,14 +136,9 @@ nav::after {
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  filter: grayscale(50%) sepia(15%) contrast(1.1) brightness(0.35);
+  filter: none;
   will-change: transform;
   transform: translateY(0);
-}
-
-.paris-overlay {
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at center, rgba(10,10,10,.4) 0%, rgba(10,10,10,.8) 100%);
 }
 
 .portrait-center {
@@ -177,30 +170,30 @@ nav::after {
 
 h1 {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(3.2rem, 8vw, 7rem);
-  font-weight: 400; line-height: 1; letter-spacing: -.01em;
-  margin-bottom: 2.5rem;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 400; line-height: 1.1; letter-spacing: -.01em;
+  margin-bottom: 2rem;
   margin-top: 0;
 }
 h1 em { font-style: italic; color: var(--accent); }
 
 .hero-foot {
-  display: flex; justify-content: center; align-items: center;
-  flex-direction: column; gap: 3rem; width: 100%;
+  display: flex; justify-content: flex-start; align-items: flex-start;
+  flex-direction: column; gap: 1.5rem; width: 100%;
 }
 .hero-desc {
   font-size: 1rem; color: var(--text); line-height: 1.8;
-  max-width: 600px; font-weight: 300;
-  margin-bottom: 1.5rem;
+  max-width: 500px; font-weight: 300;
+  margin-bottom: 0;
 }
 .hero-subtitle {
   font-size: .9rem; color: var(--muted); line-height: 1.6;
-  max-width: 600px; font-weight: 400; letter-spacing: .05em;
+  max-width: 500px; font-weight: 400; letter-spacing: .05em;
 }
 .scroll-hint {
   font-family: 'Space Mono', monospace;
   font-size: .62rem; letter-spacing: .18em; color: var(--muted);
-  text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: .5rem; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 10;
+  text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: .5rem; position: fixed; bottom: 2rem; left: 3rem; z-index: 10;
 }
 .scroll-hint::after {
   content: ''; display: block; width: 1px; height: 40px; background: var(--muted);
@@ -416,8 +409,8 @@ footer {
   .nav-links { display: none; }
 
   .hero-split { grid-template-columns: 1fr; }
-  .hero-right { height: 42vh; }
-  .hero-left { padding: 0 1.5rem 3.5rem; min-height: 60vh; justify-content: flex-end; }
+  .hero-right { height: 50vh; }
+  .hero-left { padding: 2rem 1.5rem 3.5rem; min-height: auto; justify-content: flex-start; }
   .portrait-wrap { left: 50%; transform: translateX(-50%); bottom: -52px; }
 
   .stats { grid-template-columns: 1fr 1fr; }
@@ -472,23 +465,15 @@ footer {
       </div>
     </div>
 
-    <!-- Right: Paris + portrait -->
+    <!-- Right: Portrait -->
     <div class="hero-right">
       <div class="paris-wrap">
         <img
           class="paris-img"
-          src="hero.png"
-          alt="Paris"
+          src="portrait.png"
+          alt="Junaid"
           loading="eager"
         />
-        <div class="paris-overlay"></div>
-      </div>
-      <div class="portrait-center">
-        <div class="portrait-ring"></div>
-        <div class="portrait-gap"></div>
-        <div class="portrait-frame">
-          <img src="hero.png" alt="Junaid Gulzar Malik" />
-        </div>
       </div>
     </div>
   </div>
