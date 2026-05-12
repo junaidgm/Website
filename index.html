@@ -279,30 +279,11 @@ h1 em { font-style: italic; color: var(--accent); }
 
 /* Showcase */
 .press { padding: 5.5rem 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; z-index: 2; }
-.carousel-container { position: relative; display: flex; align-items: center; gap: 2rem; }
-.carousel-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; flex: 1; transition: transform .4s ease-out; }
+.carousel-container { position: relative; display: block; }
+.carousel-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
 .press-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
 .carousel-btn {
-  background: transparent;
-  border: 1px solid var(--muted);
-  color: var(--muted);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all .3s;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-.carousel-btn:hover:not(:disabled) {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.carousel-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+  display: none;
 }
 .press-card {
   padding: 2.5rem 2rem;
@@ -461,9 +442,7 @@ footer {
   .sk-col:nth-child(odd) { border-right: 1px solid var(--border); }
 
   .press { padding: 4rem 1.5rem; }
-  .carousel-container { gap: 1rem; }
   .carousel-items { grid-template-columns: 1fr; }
-  .carousel-btn { width: 32px; height: 32px; font-size: 1rem; }
   .press-grid { grid-template-columns: 1fr; }
   .press-card { border-right: none; border-bottom: 1px solid var(--border); }
   .press-card:last-child { border-bottom: none; }
@@ -751,37 +730,6 @@ if (parisImg) {
     parisImg.style.transform = `translateY(${window.scrollY * 0.18}px)`;
   }, { passive: true });
 }
-
-// Carousel navigation
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const carouselItems = document.querySelector('.carousel-items');
-let currentIndex = 0;
-const itemsPerView = 2;
-const totalCards = 7;
-
-function updateCarousel() {
-  const scrollAmount = currentIndex * (100 / itemsPerView);
-  carouselItems.style.transform = `translateX(-${scrollAmount}%)`;
-  prevBtn.disabled = currentIndex === 0;
-  nextBtn.disabled = currentIndex >= totalCards - itemsPerView;
-}
-
-prevBtn?.addEventListener('click', () => {
-  if (currentIndex > 0) {
-    currentIndex--;
-    updateCarousel();
-  }
-});
-
-nextBtn?.addEventListener('click', () => {
-  if (currentIndex < totalCards - itemsPerView) {
-    currentIndex++;
-    updateCarousel();
-  }
-});
-
-updateCarousel();
 
 // Reveal on scroll
 const els = document.querySelectorAll('.reveal');
