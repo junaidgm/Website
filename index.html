@@ -746,33 +746,28 @@ document.addEventListener('mousemove', e => {
 });
 (function loop(){ rx+=(mx-rx)*.11; ry+=(my-ry)*.11; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
 
-// Carousel navigation (horizontal, 2 items per view)
+// Carousel navigation (horizontal, 2 items per view, looping)
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const carouselItems = document.querySelector('.carousel-items');
 let currentIndex = 0;
 const itemsPerView = 2;
 const totalCards = 7;
+const maxIndex = totalCards - itemsPerView;
 
 function updateCarousel() {
   const scrollAmount = currentIndex * 50;
   carouselItems.style.transform = `translateX(-${scrollAmount}%)`;
-  prevBtn.disabled = currentIndex === 0;
-  nextBtn.disabled = currentIndex >= totalCards - itemsPerView;
 }
 
 prevBtn?.addEventListener('click', () => {
-  if (currentIndex > 0) {
-    currentIndex--;
-    updateCarousel();
-  }
+  currentIndex = currentIndex > 0 ? currentIndex - 1 : maxIndex;
+  updateCarousel();
 });
 
 nextBtn?.addEventListener('click', () => {
-  if (currentIndex < totalCards - itemsPerView) {
-    currentIndex++;
-    updateCarousel();
-  }
+  currentIndex = currentIndex < maxIndex ? currentIndex + 1 : 0;
+  updateCarousel();
 });
 
 updateCarousel();
