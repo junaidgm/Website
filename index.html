@@ -279,33 +279,26 @@ h1 em { font-style: italic; color: var(--accent); }
 
 /* Showcase */
 .press { padding: 5.5rem 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; z-index: 2; }
-.carousel-container { position: relative; display: flex; align-items: center; gap: 2rem; z-index: 3; }
-.carousel-items { display: flex; gap: 0; transition: transform .4s ease-out; overflow: hidden; flex: 1; position: relative; z-index: 1; width: 100%; }
-.press-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+.carousel { position: relative; }
+.carousel-nav { display: flex; gap: 1rem; justify-content: flex-end; margin-bottom: 2rem; }
 .carousel-btn {
   background: transparent;
   border: 1px solid var(--muted);
   color: var(--muted);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all .3s;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 10;
-  padding: 0;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .3s;
+  font-size: 1rem; padding: 0;
 }
-.carousel-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+.carousel-btn:hover { border-color: var(--accent); color: var(--accent); }
+.carousel-viewport { overflow: hidden; width: 100%; }
+.carousel-track {
+  display: flex;
+  transition: transform .45s ease;
 }
 .press-card {
-  flex: 0 0 calc(50% - 0px);
-  min-width: 0;
+  flex: 0 0 50%;
+  box-sizing: border-box;
   padding: 2.5rem 2rem;
   border-right: 1px solid var(--border);
   text-decoration: none;
@@ -462,12 +455,8 @@ footer {
   .sk-col:nth-child(odd) { border-right: 1px solid var(--border); }
 
   .press { padding: 4rem 1.5rem; }
-  .carousel-container { gap: 1rem; }
-  .carousel-items { flex-wrap: nowrap; }
-  .press-card { flex: 0 0 100%; width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
-  .press-card:last-child { border-bottom: none; }
-  .carousel-btn { width: 32px; height: 32px; font-size: 1rem; }
-  .press-grid { grid-template-columns: 1fr; }
+  .press-card { flex: 0 0 100%; border-right: none; }
+  .carousel-btn { width: 32px; height: 32px; font-size: .9rem; }
 
   .experience { padding: 4rem 1.5rem; }
   .exp-grid { grid-template-columns: 1fr; }
@@ -647,73 +636,53 @@ footer {
 
 <!-- Showcase -->
 <section class="press" id="showcase">
-  <div class="sec-hd reveal">
+  <div class="sec-hd reveal" style="display:flex;justify-content:space-between;align-items:flex-end;">
     <h2 class="sec-title">Showcase</h2>
-  </div>
-  <div class="carousel-container">
-    <button class="carousel-btn prev" id="prevBtn">←</button>
-    <div class="carousel-items">
-      <!-- Kameleoon -->
-      <a href="https://www.prnewswire.com/news-releases/kameleoon-one-of-six-vendors-recognized-by-gartner-for-feature-management-301982748.html" target="_blank" rel="noopener" class="press-card reveal">
-        <div class="press-meta">
-          <div class="press-pub">PR Newswire</div>
-          <div class="press-year">2024</div>
-        </div>
-        <div class="press-title">Kameleoon Recognized by Gartner for Feature Management</div>
-        <div class="press-arrow">→</div>
-      </a>
-      <a href="https://www.kameleoon.com/blog/kameleoon-praised-forrester-wave-feature-experimentation" target="_blank" rel="noopener" class="press-card reveal">
-        <div class="press-meta">
-          <div class="press-pub">Kameleoon</div>
-          <div class="press-year">2024</div>
-        </div>
-        <div class="press-title">Kameleoon Praised by Forrester Wave for Feature Experimentation</div>
-        <div class="press-arrow">→</div>
-      </a>
-      <a href="https://www.martechcube.com/kameleoon-recognized-by-forrester-for-its-fme-platform/" target="_blank" rel="noopener" class="press-card reveal">
-        <div class="press-meta">
-          <div class="press-pub">MartechCube</div>
-          <div class="press-year">2024</div>
-        </div>
-        <div class="press-title">Kameleoon Recognized by Forrester for Feature Management Platform</div>
-        <div class="press-arrow">→</div>
-      </a>
-      <!-- Qwanse -->
-      <a href="https://www.bfmtv.com/economie/operations/le-tete-a-tete-decideurs/qwanse-la-digitalisation-du-secteur-routier_AN-201910010266.html" target="_blank" rel="noopener" class="press-card reveal">
-        <div class="press-meta">
-          <div class="press-pub">BFM TV</div>
-          <div class="press-year">2019</div>
-        </div>
-        <div class="press-title">Qwanse — la digitalisation du secteur routier</div>
-        <div class="press-arrow">→</div>
-      </a>
-      <!-- Farmer/CAPP Project -->
-      <a href="https://www.brecorder.com/news/4614810" target="_blank" rel="noopener" class="press-card reveal">
-        <div class="press-meta">
-          <div class="press-pub">B Recorder</div>
-          <div class="press-year">2018</div>
-        </div>
-        <div class="press-title">Connected Agriculture Platform Punjab (CAPP) Launched</div>
-        <div class="press-arrow">→</div>
-      </a>
-      <a href="https://tribune.com.pk/story/1450344/improving-agriculture-punjab-partners-telenor-telenor-microfinance-bank" target="_blank" rel="noopener" class="press-card reveal">
-        <div class="press-meta">
-          <div class="press-pub">Tribune</div>
-          <div class="press-year">2017</div>
-        </div>
-        <div class="press-title">Telenor Partners for Modernizing Agriculture in Punjab</div>
-        <div class="press-arrow">→</div>
-      </a>
-      <a href="https://tribune.com.pk/story/1662664/8-110000-smartphones-distributed-among-farmers/" target="_blank" rel="noopener" class="press-card reveal">
-        <div class="press-meta">
-          <div class="press-pub">Tribune</div>
-          <div class="press-year">2018</div>
-        </div>
-        <div class="press-title">110,000 Smartphones Distributed Among Farmers</div>
-        <div class="press-arrow">→</div>
-      </a>
+    <div class="carousel-nav">
+      <button class="carousel-btn" id="prevBtn">←</button>
+      <button class="carousel-btn" id="nextBtn">→</button>
     </div>
-    <button class="carousel-btn next" id="nextBtn">→</button>
+  </div>
+  <div class="carousel">
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="carouselTrack">
+        <a href="https://www.prnewswire.com/news-releases/kameleoon-one-of-six-vendors-recognized-by-gartner-for-feature-management-301982748.html" target="_blank" rel="noopener" class="press-card">
+          <div class="press-meta"><div class="press-pub">PR Newswire</div><div class="press-year">2024</div></div>
+          <div class="press-title">Kameleoon Recognized by Gartner for Feature Management</div>
+          <div class="press-arrow">→</div>
+        </a>
+        <a href="https://www.kameleoon.com/blog/kameleoon-praised-forrester-wave-feature-experimentation" target="_blank" rel="noopener" class="press-card">
+          <div class="press-meta"><div class="press-pub">Kameleoon</div><div class="press-year">2024</div></div>
+          <div class="press-title">Kameleoon Praised by Forrester Wave for Feature Experimentation</div>
+          <div class="press-arrow">→</div>
+        </a>
+        <a href="https://www.martechcube.com/kameleoon-recognized-by-forrester-for-its-fme-platform/" target="_blank" rel="noopener" class="press-card">
+          <div class="press-meta"><div class="press-pub">MartechCube</div><div class="press-year">2024</div></div>
+          <div class="press-title">Kameleoon Recognized by Forrester for Feature Management Platform</div>
+          <div class="press-arrow">→</div>
+        </a>
+        <a href="https://www.bfmtv.com/economie/operations/le-tete-a-tete-decideurs/qwanse-la-digitalisation-du-secteur-routier_AN-201910010266.html" target="_blank" rel="noopener" class="press-card">
+          <div class="press-meta"><div class="press-pub">BFM TV</div><div class="press-year">2019</div></div>
+          <div class="press-title">Qwanse — la digitalisation du secteur routier</div>
+          <div class="press-arrow">→</div>
+        </a>
+        <a href="https://www.brecorder.com/news/4614810" target="_blank" rel="noopener" class="press-card">
+          <div class="press-meta"><div class="press-pub">B Recorder</div><div class="press-year">2018</div></div>
+          <div class="press-title">Connected Agriculture Platform Punjab (CAPP) Launched</div>
+          <div class="press-arrow">→</div>
+        </a>
+        <a href="https://tribune.com.pk/story/1450344/improving-agriculture-punjab-partners-telenor-telenor-microfinance-bank" target="_blank" rel="noopener" class="press-card">
+          <div class="press-meta"><div class="press-pub">Tribune</div><div class="press-year">2017</div></div>
+          <div class="press-title">Telenor Partners for Modernizing Agriculture in Punjab</div>
+          <div class="press-arrow">→</div>
+        </a>
+        <a href="https://tribune.com.pk/story/1662664/8-110000-smartphones-distributed-among-farmers/" target="_blank" rel="noopener" class="press-card">
+          <div class="press-meta"><div class="press-pub">Tribune</div><div class="press-year">2018</div></div>
+          <div class="press-title">110,000 Smartphones Distributed Among Farmers</div>
+          <div class="press-arrow">→</div>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -745,31 +714,33 @@ document.addEventListener('mousemove', e => {
 });
 (function loop(){ rx+=(mx-rx)*.11; ry+=(my-ry)*.11; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
 
-// Carousel navigation (horizontal, 2 items per view, looping)
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const carouselItems = document.querySelector('.carousel-items');
-let currentIndex = 0;
-const itemsPerView = 2;
-const totalCards = 7;
-const maxIndex = totalCards - itemsPerView;
+// Carousel
+(function() {
+  const track = document.getElementById('carouselTrack');
+  const prev = document.getElementById('prevBtn');
+  const next = document.getElementById('nextBtn');
+  if (!track) return;
+  const cards = track.children;
+  const total = cards.length;
+  const perView = 2;
+  let idx = 0;
 
-function updateCarousel() {
-  const scrollAmount = currentIndex * 50;
-  carouselItems.style.transform = `translateX(-${scrollAmount}%)`;
-}
+  function slide() {
+    track.style.transform = 'translateX(-' + (idx * (100 / perView)) + '%)';
+  }
 
-prevBtn?.addEventListener('click', () => {
-  currentIndex = currentIndex > 0 ? currentIndex - 1 : maxIndex;
-  updateCarousel();
-});
+  next.addEventListener('click', function() {
+    idx = idx + 1 > total - perView ? 0 : idx + 1;
+    slide();
+  });
 
-nextBtn?.addEventListener('click', () => {
-  currentIndex = currentIndex < maxIndex ? currentIndex + 1 : 0;
-  updateCarousel();
-});
+  prev.addEventListener('click', function() {
+    idx = idx - 1 < 0 ? total - perView : idx - 1;
+    slide();
+  });
 
-updateCarousel();
+  slide();
+})();
 
 // Paris parallax on scroll
 const parisImg = document.querySelector('.paris-img');
