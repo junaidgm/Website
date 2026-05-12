@@ -279,11 +279,30 @@ h1 em { font-style: italic; color: var(--accent); }
 
 /* Showcase */
 .press { padding: 5.5rem 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; z-index: 2; }
-.carousel-container { position: relative; display: block; }
-.carousel-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+.carousel-container { position: relative; display: flex; align-items: center; gap: 2rem; }
+.carousel-items { display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0; flex: 1; transition: transform .4s ease-out; width: 100%; }
 .press-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
 .carousel-btn {
-  display: none;
+  background: transparent;
+  border: 1px solid var(--muted);
+  color: var(--muted);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .3s;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.carousel-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.carousel-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 .press-card {
   padding: 2.5rem 2rem;
@@ -442,7 +461,9 @@ footer {
   .sk-col:nth-child(odd) { border-right: 1px solid var(--border); }
 
   .press { padding: 4rem 1.5rem; }
-  .carousel-items { grid-template-columns: 1fr; }
+  .carousel-container { gap: 1rem; }
+  .carousel-items { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .carousel-btn { width: 32px; height: 32px; font-size: 1rem; }
   .press-grid { grid-template-columns: 1fr; }
   .press-card { border-right: none; border-bottom: 1px solid var(--border); }
   .press-card:last-child { border-bottom: none; }
@@ -687,7 +708,7 @@ footer {
           <div class="press-pub">Tribune</div>
           <div class="press-year">2018</div>
         </div>
-        <div class="press-title">8,110,000 Smartphones Distributed Among Farmers</div>
+        <div class="press-title">110,000 Smartphones Distributed Among Farmers</div>
         <div class="press-arrow">→</div>
       </a>
     </div>
@@ -722,6 +743,39 @@ document.addEventListener('mousemove', e => {
   cur.style.left=mx+'px'; cur.style.top=my+'px';
 });
 (function loop(){ rx+=(mx-rx)*.11; ry+=(my-ry)*.11; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+
+// Carousel navigation (4 items per view: 2x2 grid)
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const carouselItems = document.querySelector('.carousel-items');
+let currentIndex = 0;
+const itemsPerView = 4;
+const totalCards = 7;
+
+function updateCarousel() {
+  const scrollAmount = (currentIndex / itemsPerView) * 100;
+  carouselItems.style.transform = `translateX(-${scrollAmount}%)`;
+  prevBtn.disabled = currentIndex === 0;
+  nextBtn.disabled = currentIndex >= totalCards - itemsPerView;
+}
+
+prevBtn?.addEventListener('click', () => {
+  if (currentIndex > 0) {
+    currentIndex -= 2;
+    if (currentIndex < 0) currentIndex = 0;
+    updateCarousel();
+  }
+});
+
+nextBtn?.addEventListener('click', () => {
+  if (currentIndex < totalCards - itemsPerView) {
+    currentIndex += 2;
+    if (currentIndex > totalCards - itemsPerView) currentIndex = totalCards - itemsPerView;
+    updateCarousel();
+  }
+});
+
+updateCarousel();
 
 // Paris parallax on scroll
 const parisImg = document.querySelector('.paris-img');
