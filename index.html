@@ -203,7 +203,9 @@ h1 em { font-style: italic; color: var(--accent); }
   font-family: 'Space Mono', monospace;
   font-size: .62rem; letter-spacing: .18em; color: var(--muted);
   text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: .5rem; position: fixed; bottom: 2rem; left: 3rem; z-index: 10;
+  transition: opacity .4s ease;
 }
+.scroll-hint.hidden { opacity: 0; pointer-events: none; }
 .scroll-hint::after {
   content: ''; display: block; width: 1px; height: 40px; background: var(--muted);
   animation: pulse 2s ease-in-out infinite;
@@ -770,6 +772,15 @@ document.addEventListener('mousemove', e => {
   slide();
   startAuto();
 })();
+
+// Hide scroll hint after 5% scroll
+const scrollHint = document.querySelector('.scroll-hint');
+if (scrollHint) {
+  window.addEventListener('scroll', function() {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    scrollHint.classList.toggle('hidden', pct > 0.05);
+  }, { passive: true });
+}
 
 // Paris parallax on scroll
 const parisImg = document.querySelector('.paris-img');
