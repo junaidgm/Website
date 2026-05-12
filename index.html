@@ -279,7 +279,31 @@ h1 em { font-style: italic; color: var(--accent); }
 
 /* Showcase */
 .press { padding: 5.5rem 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; z-index: 2; }
+.carousel-container { position: relative; display: flex; align-items: center; gap: 2rem; }
+.carousel-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; flex: 1; transition: transform .4s ease-out; }
 .press-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+.carousel-btn {
+  background: transparent;
+  border: 1px solid var(--muted);
+  color: var(--muted);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .3s;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.carousel-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.carousel-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
 .press-card {
   padding: 2.5rem 2rem;
   border-right: 1px solid var(--border);
@@ -437,6 +461,9 @@ footer {
   .sk-col:nth-child(odd) { border-right: 1px solid var(--border); }
 
   .press { padding: 4rem 1.5rem; }
+  .carousel-container { gap: 1rem; }
+  .carousel-items { grid-template-columns: 1fr; }
+  .carousel-btn { width: 32px; height: 32px; font-size: 1rem; }
   .press-grid { grid-template-columns: 1fr; }
   .press-card { border-right: none; border-bottom: 1px solid var(--border); }
   .press-card:last-child { border-bottom: none; }
@@ -622,33 +649,70 @@ footer {
   <div class="sec-hd reveal">
     <h2 class="sec-title">Showcase</h2>
   </div>
-  <div class="press-grid">
-    <a
-      href="https://www.bfmtv.com/economie/operations/le-tete-a-tete-decideurs/qwanse-la-digitalisation-du-secteur-routier_AN-201910010266.html"
-      target="_blank"
-      rel="noopener"
-      class="press-card reveal"
-    >
-      <div class="press-meta">
-        <div class="press-pub">BFM TV</div>
-        <div class="press-year">2019</div>
-      </div>
-      <div class="press-title">Qwanse — la digitalisation du secteur routier</div>
-      <div class="press-arrow">→</div>
-    </a>
-    <a
-      href="https://propakistani.pk/2018/04/02/telenor-and-inbox-business-technologies-lead-the-way-in-modernizing-agriculture-in-punjab/"
-      target="_blank"
-      rel="noopener"
-      class="press-card reveal"
-    >
-      <div class="press-meta">
-        <div class="press-pub">ProPakistani</div>
-        <div class="press-year">2018</div>
-      </div>
-      <div class="press-title">Telenor and Inbox Business Technologies Lead the Way in Modernizing Agriculture in Punjab</div>
-      <div class="press-arrow">→</div>
-    </a>
+  <div class="carousel-container">
+    <button class="carousel-btn prev" id="prevBtn">←</button>
+    <div class="press-grid carousel-items">
+      <!-- Kameleoon -->
+      <a href="https://www.prnewswire.com/news-releases/kameleoon-one-of-six-vendors-recognized-by-gartner-for-feature-management-301982748.html" target="_blank" rel="noopener" class="press-card reveal">
+        <div class="press-meta">
+          <div class="press-pub">PR Newswire</div>
+          <div class="press-year">2024</div>
+        </div>
+        <div class="press-title">Kameleoon Recognized by Gartner for Feature Management</div>
+        <div class="press-arrow">→</div>
+      </a>
+      <a href="https://www.kameleoon.com/blog/kameleoon-praised-forrester-wave-feature-experimentation" target="_blank" rel="noopener" class="press-card reveal">
+        <div class="press-meta">
+          <div class="press-pub">Kameleoon</div>
+          <div class="press-year">2024</div>
+        </div>
+        <div class="press-title">Kameleoon Praised by Forrester Wave for Feature Experimentation</div>
+        <div class="press-arrow">→</div>
+      </a>
+      <a href="https://www.martechcube.com/kameleoon-recognized-by-forrester-for-its-fme-platform/" target="_blank" rel="noopener" class="press-card reveal">
+        <div class="press-meta">
+          <div class="press-pub">MartechCube</div>
+          <div class="press-year">2024</div>
+        </div>
+        <div class="press-title">Kameleoon Recognized by Forrester for Feature Management Platform</div>
+        <div class="press-arrow">→</div>
+      </a>
+      <!-- Qwanse -->
+      <a href="https://www.bfmtv.com/economie/operations/le-tete-a-tete-decideurs/qwanse-la-digitalisation-du-secteur-routier_AN-201910010266.html" target="_blank" rel="noopener" class="press-card reveal">
+        <div class="press-meta">
+          <div class="press-pub">BFM TV</div>
+          <div class="press-year">2019</div>
+        </div>
+        <div class="press-title">Qwanse — la digitalisation du secteur routier</div>
+        <div class="press-arrow">→</div>
+      </a>
+      <!-- Farmer/CAPP Project -->
+      <a href="https://www.brecorder.com/news/4614810" target="_blank" rel="noopener" class="press-card reveal">
+        <div class="press-meta">
+          <div class="press-pub">B Recorder</div>
+          <div class="press-year">2018</div>
+        </div>
+        <div class="press-title">Connected Agriculture Platform Punjab (CAPP) Launched</div>
+        <div class="press-arrow">→</div>
+      </a>
+      <a href="https://tribune.com.pk/story/1450344/improving-agriculture-punjab-partners-telenor-telenor-microfinance-bank" target="_blank" rel="noopener" class="press-card reveal">
+        <div class="press-meta">
+          <div class="press-pub">Tribune</div>
+          <div class="press-year">2017</div>
+        </div>
+        <div class="press-title">Telenor Partners for Modernizing Agriculture in Punjab</div>
+        <div class="press-arrow">→</div>
+      </a>
+      <a href="https://tribune.com.pk/story/1662664/8-110000-smartphones-distributed-among-farmers/" target="_blank" rel="noopener" class="press-card reveal">
+        <div class="press-meta">
+          <div class="press-pub">Tribune</div>
+          <div class="press-year">2018</div>
+        </div>
+        <div class="press-title">8,110,000 Smartphones Distributed Among Farmers</div>
+        <div class="press-arrow">→</div>
+      </a>
+    </div>
+    <button class="carousel-btn next" id="nextBtn">→</button>
   </div>
 </section>
 
@@ -687,6 +751,37 @@ if (parisImg) {
     parisImg.style.transform = `translateY(${window.scrollY * 0.18}px)`;
   }, { passive: true });
 }
+
+// Carousel navigation
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const carouselItems = document.querySelector('.carousel-items');
+let currentIndex = 0;
+const itemsPerView = 2;
+const totalCards = 7;
+
+function updateCarousel() {
+  const scrollAmount = currentIndex * (100 / itemsPerView);
+  carouselItems.style.transform = `translateX(-${scrollAmount}%)`;
+  prevBtn.disabled = currentIndex === 0;
+  nextBtn.disabled = currentIndex >= totalCards - itemsPerView;
+}
+
+prevBtn?.addEventListener('click', () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    updateCarousel();
+  }
+});
+
+nextBtn?.addEventListener('click', () => {
+  if (currentIndex < totalCards - itemsPerView) {
+    currentIndex++;
+    updateCarousel();
+  }
+});
+
+updateCarousel();
 
 // Reveal on scroll
 const els = document.querySelectorAll('.reveal');
