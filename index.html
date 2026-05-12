@@ -724,22 +724,39 @@ document.addEventListener('mousemove', e => {
   const total = cards.length;
   const perView = 2;
   let idx = 0;
+  let autoTimer;
 
   function slide() {
     track.style.transform = 'translateX(-' + (idx * (100 / perView)) + '%)';
   }
 
-  next.addEventListener('click', function() {
+  function advance() {
     idx = idx + 1 > total - perView ? 0 : idx + 1;
     slide();
+  }
+
+  function startAuto() {
+    autoTimer = setInterval(advance, 4000);
+  }
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    startAuto();
+  }
+
+  next.addEventListener('click', function() {
+    advance();
+    resetAuto();
   });
 
   prev.addEventListener('click', function() {
     idx = idx - 1 < 0 ? total - perView : idx - 1;
     slide();
+    resetAuto();
   });
 
   slide();
+  startAuto();
 })();
 
 // Paris parallax on scroll
