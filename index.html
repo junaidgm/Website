@@ -294,7 +294,7 @@ h1 em { font-style: italic; color: var(--accent); }
 .carousel-viewport { overflow: hidden; width: 100%; }
 .carousel-track {
   display: flex;
-  transition: transform .45s ease;
+  transition: transform 4s linear;
 }
 .press-card {
   flex: 0 0 50%;
@@ -745,14 +745,18 @@ document.addEventListener('mousemove', e => {
   }
 
   next.addEventListener('click', function() {
+    track.style.transition = 'transform .45s ease';
     advance();
     resetAuto();
+    setTimeout(function(){ track.style.transition = 'transform 4s linear'; }, 500);
   });
 
   prev.addEventListener('click', function() {
+    track.style.transition = 'transform .45s ease';
     idx = idx - 1 < 0 ? total - perView : idx - 1;
     slide();
     resetAuto();
+    setTimeout(function(){ track.style.transition = 'transform 4s linear'; }, 500);
   });
 
   slide();
