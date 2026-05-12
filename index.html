@@ -279,8 +279,8 @@ h1 em { font-style: italic; color: var(--accent); }
 
 /* Showcase */
 .press { padding: 5.5rem 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; z-index: 2; }
-.carousel-container { position: relative; display: flex; align-items: center; gap: 2rem; }
-.carousel-items { display: flex; gap: 0; transition: transform .4s ease-out; overflow: hidden; flex: 1; }
+.carousel-container { position: relative; display: flex; align-items: center; gap: 2rem; z-index: 3; }
+.carousel-items { display: flex; gap: 0; transition: transform .4s ease-out; overflow: hidden; flex: 1; position: relative; z-index: 1; }
 .press-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
 .carousel-btn {
   background: transparent;
@@ -295,14 +295,12 @@ h1 em { font-style: italic; color: var(--accent); }
   transition: all .3s;
   font-size: 1.2rem;
   flex-shrink: 0;
+  position: relative;
+  z-index: 10;
 }
-.carousel-btn:hover:not(:disabled) {
+.carousel-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
-}
-.carousel-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
 }
 .press-card {
   flex: 0 0 50%;
