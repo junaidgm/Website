@@ -731,8 +731,16 @@ document.addEventListener('mousemove', e => {
   }
 
   function advance() {
-    idx = idx + 1 > total - perView ? 0 : idx + 1;
-    slide();
+    if (idx >= total - perView) {
+      track.style.transition = 'none';
+      idx = 0;
+      slide();
+      track.offsetHeight;
+      track.style.transition = 'transform 4s linear';
+    } else {
+      idx++;
+      slide();
+    }
   }
 
   function startAuto() {
