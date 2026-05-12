@@ -279,8 +279,9 @@ h1 em { font-style: italic; color: var(--accent); }
 
 /* Showcase */
 .press { padding: 5.5rem 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; z-index: 2; }
-.carousel-container { position: relative; display: flex; align-items: flex-start; gap: 2rem; }
-.carousel-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; transition: transform .4s ease-out; overflow: hidden; flex: 1; }
+.carousel-container { position: relative; display: flex; align-items: center; gap: 2rem; }
+.carousel-items { display: flex; gap: 0; transition: transform .4s ease-out; overflow: hidden; flex: 1; }
+.press-card { flex: 0 0 50%; width: 50%; }
 .press-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
 .carousel-btn {
   background: transparent;
@@ -462,11 +463,11 @@ footer {
 
   .press { padding: 4rem 1.5rem; }
   .carousel-container { gap: 1rem; }
-  .carousel-items { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .carousel-items { flex-wrap: nowrap; }
+  .press-card { flex: 0 0 100%; width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+  .press-card:last-child { border-bottom: none; }
   .carousel-btn { width: 32px; height: 32px; font-size: 1rem; }
   .press-grid { grid-template-columns: 1fr; }
-  .press-card { border-right: none; border-bottom: 1px solid var(--border); }
-  .press-card:last-child { border-bottom: none; }
 
   .experience { padding: 4rem 1.5rem; }
   .exp-grid { grid-template-columns: 1fr; }
@@ -744,42 +745,36 @@ document.addEventListener('mousemove', e => {
 });
 (function loop(){ rx+=(mx-rx)*.11; ry+=(my-ry)*.11; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
 
-// Carousel navigation (4 items per view: 2x2 grid with 2 columns)
+// Carousel navigation (horizontal, 2 items per view)
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const carouselItems = document.querySelector('.carousel-items');
-let currentRow = 0;
-const itemsPerRow = 2;
-const rowsPerView = 2;
+let currentIndex = 0;
+const itemsPerView = 2;
 const totalCards = 7;
 
 function updateCarousel() {
-  const pressCards = document.querySelectorAll('.press-card');
-  const cardHeight = pressCards.length > 0 ? pressCards[0].offsetHeight : 200;
-  const scrollAmount = currentRow * cardHeight;
-  carouselItems.style.transform = `translateY(-${scrollAmount}px)`;
-  prevBtn.disabled = currentRow === 0;
-  const maxRows = Math.ceil(totalCards / itemsPerRow);
-  nextBtn.disabled = currentRow >= maxRows - rowsPerView;
+  const scrollAmount = currentIndex * 50;
+  carouselItems.style.transform = `translateX(-${scrollAmount}%)`;
+  prevBtn.disabled = currentIndex === 0;
+  nextBtn.disabled = currentIndex >= totalCards - itemsPerView;
 }
 
 prevBtn?.addEventListener('click', () => {
-  if (currentRow > 0) {
-    currentRow--;
+  if (currentIndex > 0) {
+    currentIndex--;
     updateCarousel();
   }
 });
 
 nextBtn?.addEventListener('click', () => {
-  const maxRows = Math.ceil(totalCards / itemsPerRow);
-  if (currentRow < maxRows - rowsPerView) {
-    currentRow++;
+  if (currentIndex < totalCards - itemsPerView) {
+    currentIndex++;
     updateCarousel();
   }
 });
 
-window.addEventListener('load', updateCarousel);
-setTimeout(updateCarousel, 100);
+updateCarousel();
 
 // Paris parallax on scroll
 const parisImg = document.querySelector('.paris-img');
